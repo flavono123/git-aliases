@@ -17,7 +17,7 @@ module Alias
           next unless line.match(INTERESTING_PATTERN)
           line[INTERESTING_PATTERN] = ''
           line.strip
-        end.compact
+        end.compact.uniq
       end
     end
   end
