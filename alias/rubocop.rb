@@ -14,8 +14,9 @@ module Alias
 
       def files_to_lint
         `git status`.split("\n").map do |line|
-          next unless line.match(INTERESTING_PATTERN)
+          next unless line.match?(INTERESTING_PATTERN)
           line[INTERESTING_PATTERN] = ''
+          next unless line.match?(/.+\.rb/)
           line.strip
         end.compact.uniq
       end
