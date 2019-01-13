@@ -1,17 +1,18 @@
 module Alias
   class Rubocop
     class << self
-      CMD = 'rubocop'
+      CMD = 'rubocop'.freeze
       INTERESTING_PATTERN_PREFIXES = %w[
         new\ file:
         modified:
         새\ 파일:
         수정함:
-      ]
+      ].freeze
 
       def lint
         puts files_to_lint
-        return if files_to_lint.size == 0
+        return if files_to_lint.size.zero?
+
         system(CMD, *files_to_lint)
       end
 
@@ -20,13 +21,14 @@ module Alias
       def files_to_lint
         `git status`.split("\n").map do |line|
           next unless line.match?(interesting_pattern)
+
           line[interesting_prefix_pattern] = ''
           line.strip
         end.compact.uniq
       end
 
       def interesting_pattern
-        oring_regexp_from(INTERESTING_PATTERN_PREFIXES.map {|p| p + '.*\.rb'})
+        oring_regexp_from(INTERESTING_PATTERN_PREFIXES.map { |p| p + '.*\.rb' })
       end
 
       def interesting_prefix_pattern
